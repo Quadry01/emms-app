@@ -37,69 +37,93 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto mt-10 md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0  ">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
-              Sign up
-            </h1>
+    <form className=" " onSubmit={handleSubmit}>
 
-            <div>
-              <label
-                htmlFor="email"
+
+   <div className="flex w-screen flex-wrap text-slate-800">
+      <div className="relative hidden h-screen select-none flex-col justify-center bg-sky-900 text-center md:flex md:w-1/2">
+        <div className="mx-auto py-16 px-8 text-white xl:w-[40rem]">
+          <span className="rounded-full bg-white px-10 py-1 font-medium text-sky-900 text-5xl ">Welcome</span>
+          <p className="my-6 text-3xl font-semibold leading-10">
+            <span className="mx-auto block w-auto whitespace-nowrap rounded-lg bg-orange-400 py-2 text-white">
+              Electronic Mail Management System
+            </span>
+          </p>
+          
+        </div>
+        {/* <img className="mx-auto w-11/12 max-w-lg rounded-lg object-cover" src="/images/SoOmmtD2P6rjV76JvJTc6.png" /> */}
+      </div>
+      <div className="flex w-full flex-col md:w-1/2">
+       
+        <div className="my-auto mx-auto flex flex-col justify-center px-6 pt-8 md:justify-start lg:w-[28rem]">
+          <p className="text-center text-3xl font-bold md:text-left md:leading-tight">
+            Create an account
+          </p>
+         
+        
+         
+          <div className="flex flex-col items-stretch pt-3 md:pt-8">
+            <div className="flex flex-col pt-4">
+            </div>
+            <div className="flex flex-col pt-4">
+               <label
+                htmlFor="password"
                 className="block mb-2 text-sm font-medium text-gray-900 "
               >
-                Your email
+                Email
               </label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-                placeholder="name@company.com"
-                value={email}
+              <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
+                
+                <input
+                  type="email"
+                  id="login-email"
+                  className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+                  placeholder="Email"
+                        value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+                />
+              </div>
             </div>
-            <div>
-              <label
+            <div className="mb-4 flex flex-col pt-4">
+               <label
                 htmlFor="password"
                 className="block mb-2 text-sm font-medium text-gray-900 "
               >
                 Password
               </label>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="••••••••"
-                value={password}
+              <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
+                <input
+                  type="password"
+                  id="login-password"
+                  className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+                  placeholder="Password (minimum 8 characters)"
+                   value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
-                required
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-start">
-                
-               
+                />
               </div>
+            </div>
+            <div className="block">
+              <input
+                className="mr-2 h-5 w-5 appearance-none rounded border border-gray-300 bg-contain bg-no-repeat align-top text-black shadow checked:bg-blue-600 focus:border-blue-600 focus:shadow"
+                type="checkbox"
+                id="remember-me"
+                defaultChecked
+              />
+              <label className="inline-block" htmlFor="remember-me">
+                I agree to the <a className="underline" href="#">Terms and Conditions</a>
+              </label>
             </div>
             <button
               type="submit"
-              className="w-full text-white bg-black hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+              className="mt-6 rounded-lg bg-sky-900 px-4 py-2 text-center text-base font-semibold text-white shadow-md outline-none ring-blue-500 ring-offset-2 transition hover:bg-blue-700 focus:ring-2 md:w-32"
             >
               Sign up
             </button>
-
-            <div className="w-full text-white   font-medium rounded-lg text-sm px-5  text-center ">
-            </div>
-           
           </div>
         </div>
       </div>
+    </div>
+
     </form>
   );
 };
@@ -135,91 +159,96 @@ const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   return (
-    <form onSubmit={handleSubmit1}>
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto mt-10 md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0  ">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
-              Sign in to your account
-            </h1>
 
-            <div>
-              <label
-                htmlFor="email"
+ <form onSubmit={handleSubmit1}>
+
+
+   <div className="flex w-screen flex-wrap text-slate-800">
+      <div className="relative hidden h-screen select-none flex-col justify-center bg-sky-900 text-center md:flex md:w-1/2">
+        <div className="mx-auto py-16 px-8 text-white xl:w-[40rem]">
+          <span className="rounded-full bg-white px-10 py-1 font-medium text-sky-900 text-5xl ">Welcome Back</span>
+          <p className="my-6 text-3xl font-semibold leading-10">
+            <span className="mx-auto block w-auto whitespace-nowrap rounded-lg bg-orange-400 py-2 text-white">
+              Electronic Mail Management System
+            </span>
+          </p>
+          
+        </div>
+        {/* <img className="mx-auto w-11/12 max-w-lg rounded-lg object-cover" src="/images/SoOmmtD2P6rjV76JvJTc6.png" /> */}
+      </div>
+      <div className="flex w-full flex-col md:w-1/2">
+       
+        <div className="my-auto mx-auto flex flex-col justify-center px-6 pt-8 md:justify-start lg:w-[28rem]">
+          <p className="text-center text-3xl font-bold md:text-left md:leading-tight">
+           Login to your Account
+          </p>
+         
+        
+         
+          <div className="flex flex-col items-stretch pt-3 md:pt-8">
+            <div className="flex flex-col pt-4">
+            </div>
+            <div className="flex flex-col pt-4">
+               <label
+                htmlFor="password"
                 className="block mb-2 text-sm font-medium text-gray-900 "
               >
-                Your email
+                Email
               </label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-                placeholder="name@company.com"
-                value={email}
+              <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
+                
+                <input
+                  type="email"
+                  id="login-email"
+                  className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+                  placeholder="Email"
+                        value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+                />
+              </div>
             </div>
-            <div>
-              <label
+            <div className="mb-4 flex flex-col pt-4">
+               <label
                 htmlFor="password"
                 className="block mb-2 text-sm font-medium text-gray-900 "
               >
                 Password
               </label>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="••••••••"
-                value={password}
+              <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
+                <input
+                  type="password"
+                  id="login-password"
+                  className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+                  placeholder="Password"
+                   value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
-                required
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-start">
-                <div className="flex items-center h-5">
-                  <input
-                    id="remember"
-                    aria-describedby="remember"
-                    type="checkbox"
-                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300  "
-                    required
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <label
-                    htmlFor="remember"
-                    className="text-gray-500 dark:text-gray-300"
-                  >
-                    Remember me
-                  </label>
-                </div>
+                />
               </div>
-              {/* <a
-                href="#"
-                className="text-sm font-medium text-black hover:underline "
-              >
-                Forgot password?
-              </a> */}
             </div>
+           
             <button
               type="submit"
-              className="w-full text-white bg-black hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+              className="mt-6 rounded-lg bg-sky-900 px-4 py-2 text-center text-base font-semibold text-white shadow-md outline-none ring-blue-500 ring-offset-2 transition hover:bg-blue-700 focus:ring-2 md:w-32"
             >
               Sign in
             </button>
-
-            <div className="w-full text-white   font-medium rounded-lg text-sm px-5  text-center ">
-            </div>
-            
           </div>
         </div>
       </div>
+    </div>
+
     </form>
+
+
+
+
+
+
+
+
+
+
+
   );
 };
 
@@ -241,16 +270,16 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
+    <div className="animate__animated  animate__fadeIn">
       {showSigin ? (<>
-        <Signin />
-          <button className=" absolute top-4 right-4 text-white py-2text-white bg-blue-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center " onClick={handleClick2}>
+        <Signin className="animate__animated  animate__fadeInDown" />
+          <button className=" absolute top-4 right-4 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center " onClick={handleClick2}>
            Signup
           </button></>
       ) : (
         <>
-          <Signup /> {/* Render ComponentOne */}
-          <button className=" absolute top-4 right-4 text-white py-2text-white bg-blue-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center " onClick={handleClick1}>
+          <Signup className="animate__animated  animate__fadeIn" /> {/* Render ComponentOne */}
+          <button className=" absolute top-4 right-4 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center " onClick={handleClick1}>
            Signin
           </button>
         </>

@@ -154,15 +154,14 @@ export default function AddProductForm() {
           </div>
           <button
             type="submit"
-            className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-black bg-gray-300 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800"
+            className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-sky-900 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800"
           >
             Submit
           </button>
 
           <button
      onClick={handleLogout}
-        className=" inline-flex items-center px-5 py-2.5 mx-auto sm:mt-6 text-sm font-medium text-center text-black bg-gray-300 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800"
-      >
+className=" absolute top-4 right-4 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "      >
         Logout
       </button>
         </form>
