@@ -1,12 +1,25 @@
+"use client"
 import "animate.css";
-import Nav from "./Components/NavBar/page";
+
+
+import Nav from "../Components/NavBar/page";
 
  function Home() {
+
+ 
+
   return (
     <>
+
+
       <div className="">
         <Nav />
-     
+
+
+
+
+
+
         <section className="animate__animated animate__fadeInDown h-screen bg-gray-900">
           <div className="py-8 px-4  mx-auto max-w-screen-xl text-center lg:py-60">
             <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">

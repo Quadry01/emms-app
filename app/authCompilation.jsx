@@ -30,4 +30,21 @@ export const logout = async () => {
     throw error;
   }
 };
+// fetch mail with ID
+export const useMailById = (mailId) => {
+   const [mailData, setMailData] = useState(null);
+   const [loading, setLoading] = useState(true);
 
+   useEffect(() => {
+      const fetchData = async () => {
+         setLoading(true);
+         const data = await fetchMailById(mailId);
+         setMailData(data);
+         setLoading(false);
+      };
+
+      if (mailId) fetchData();
+   }, [mailId]);
+
+   return { mailData, loading };
+};

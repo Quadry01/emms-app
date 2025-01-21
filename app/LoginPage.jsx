@@ -5,6 +5,7 @@ import { signup } from "./authCompilation";
 import { login } from "./authCompilation";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from './firebase';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 
@@ -21,19 +22,59 @@ const unsubscribe = onAuthStateChanged(auth, (user) => {
 
 // First Component
 const Signup = () => {
-  const handleSubmit = async (e) => {
-    console.log(email, password)
 
-  e.preventDefault();
+
+const handleSubmit = async (e) => {
+  e.preventDefault(); // Prevent default form submission
+  console.log("Email:", email, "Password:", password);
+
   try {
-    await signup(email, password);
-
-    alert("Sign-up successful!");
+    await signup(email, password); // Assuming `signup` is your Firebase function
+    toast.success("Sign-up successful!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: true,
+      theme: "light",
+    });
   } catch (error) {
+    // Handle Firebase errors and display user-friendly messages
+    let customMessage;
+
+    switch (error.code) {
+      case "auth/email-already-in-use":
+        customMessage = "This email is already in use. Please use a different one.";
+        break;
+      case "auth/weak-password":
+        customMessage = "Password is too weak. Please use a stronger one.";
+        break;
+      case "auth/invalid-email":
+        customMessage = "Invalid email address. Please check and try again.";
+        break;
+      case "auth/operation-not-allowed":
+        customMessage = "Email/password accounts are not enabled.";
+        break;
+      default:
+        customMessage = `Unexpected error: ${error.message}`;
+        break;
+    }
+
+    // Display the custom message as a toast notification
+    toast.error(customMessage, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
+    });
+
     console.error("Error code:", error.code);
     console.error("Error message:", error.message);
   }
 };
+
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   return (
@@ -123,7 +164,7 @@ const Signup = () => {
         </div>
       </div>
     </div>
-
+ <ToastContainer />
     </form>
   );
 };
@@ -135,8 +176,8 @@ const handleSubmit1 = async (e) => {
   e.preventDefault();
   try {
     await login(email, password);
-
-    alert("Sign-up successful!");
+notify()
+    // alert("Sign-up successful!");
   } catch (error) {
     console.error("Error code:", error.code);
     console.error("Error message:", error.message);
@@ -144,18 +185,57 @@ const handleSubmit1 = async (e) => {
 };
 
 const Signin = () => {
-  const handleSubmit1 = async (e) => {
-  console.log("Success")
-  e.preventDefault();
-  try {
-    await login(email, password);
 
-    alert("Sign-up successful!");
+const handleSubmit1 = async (e) => {
+  e.preventDefault(); // Prevent the default form submission behavior
+
+  console.log("Success");
+
+  try {
+    await login(email, password); // Assuming `login` is your Firebase function
+
+    // Notify the user of a successful login
+    toast.success("Login successful!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: true,
+      theme: "light",
+    });
   } catch (error) {
+    // Log the error for debugging
     console.error("Error code:", error.code);
     console.error("Error message:", error.message);
+
+    // Handle Firebase errors and show user-friendly messages
+    let customMessage;
+    switch (error.code) {
+      case "auth/user-not-found":
+        customMessage = "No account found with this email. Please check and try again.";
+        break;
+      case "auth/wrong-password":
+        customMessage = "Incorrect password. Please try again.";
+        break;
+      case "auth/invalid-email":
+        customMessage = "Invalid email address. Please check and try again.";
+        break;
+      default:
+        customMessage = `Unexpected error: ${error.message}`;
+        break;
+    }
+
+    // Show the error message as a Toastify notification
+    toast.error(customMessage, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
+    });
   }
 };
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   return (
@@ -236,7 +316,7 @@ const Signin = () => {
         </div>
       </div>
     </div>
-
+ <ToastContainer />
     </form>
 
 
