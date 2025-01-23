@@ -6,8 +6,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
 import Link from "next/link";
 import { supabase } from "../app/lib/supabaseClient.js";
-import { useState, useRef } from "react";
-import axios from "axios";
+import { useState, useRef, useEffect } from "react";
 
 const notify1 = () =>
   toast.success("Success ✅ ", {
@@ -55,6 +54,8 @@ const handleLogout = async (e) => {
   }
 };
 
+
+
 // ADD MAIL
 
 export default function AddMailForm() {
@@ -66,8 +67,15 @@ export default function AddMailForm() {
   const [currentL, setCurrentL] = useState("");
   const [remarks, setRemarks] = useState("");
   const [description, setDescription] = useState("");
- 
-  
+
+
+
+
+
+
+
+
+
 
   const fileInputRef = useRef(null); // Ref to trigger file input
   const [file, setFile] = useState(null); // Store selected file
@@ -121,6 +129,11 @@ function notifyAndReload() {
   notify1(); // Call your notification function
   window.location.reload(); // Reload the page
 }
+
+
+
+
+
 
   // Function to add a row to the database with the image URL
   const addRow = async (e) => {

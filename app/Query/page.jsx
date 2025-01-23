@@ -50,15 +50,7 @@ const MailDetails = () => {
     </form>
 
       {loading && mailId && <p>Loading...</p>}
-      {/* {!loading && mailId && (!mailData || mailData.length === 0) && (
-        <p>No mail found.</p>
-      )}
-      {!loading && mailData && mailData.length > 0 && (
-        <div>
-          <h1>Mail Details</h1>
-          <pre>{JSON.stringify(mailData, null, 2)}</pre>
-        </div>
-      )} */}
+      
 
       <div className="w-full max-w-7xl px-4 md:px-5 lg:px-5 mx-auto">
         {mailData.map((item) => (
