@@ -7,7 +7,6 @@ import { ToastContainer, toast } from "react-toastify";
 import Link from "next/link";
 import { supabase } from "../app/lib/supabaseClient.js";
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from 'next/navigation'; // Import useRouter
 
 const notify1 = () =>
   toast.success("Success ✅ ", {
@@ -58,7 +57,6 @@ export default function AddMailForm() {
   const fileInputRef = useRef(null); // Ref to trigger file input
   const [file, setFile] = useState(null); // Store selected file
   const [isSubmitting, setIsSubmitting] = useState(false);
- const router = useRouter();
   // Trigger file input when the submit button is clicked
   const triggerFileInput = () => {
     fileInputRef.current.click();
@@ -120,9 +118,9 @@ export default function AddMailForm() {
       setFile(null);  }
 
   // CHECK AUTH
-const unsubscribe = onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, (user) => {
   if (!user) {
-    window.location.href = "/";
+    window.location.href ="/";
     console.log("No user is signed in");
   } else {
     console.log("User is signed in:", user);
