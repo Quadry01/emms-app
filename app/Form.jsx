@@ -32,16 +32,6 @@ function generateUniqueID() {
   return uniqueID;
 }
 
-// CHECK AUTH
-const unsubscribe = onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.href = "/";
-    console.log("No user is signed in");
-  } else {
-    console.log("User is signed in:", user);
-  }
-});
-
 // LOGOUT
 const handleLogout = async (e) => {
   e.preventDefault();
@@ -54,10 +44,7 @@ const handleLogout = async (e) => {
   }
 };
 
-
-
 // ADD MAIL
-
 export default function AddMailForm() {
   const [mailID, setMailID] = useState(generateUniqueID());
   const [sender, setSender] = useState("");
@@ -67,16 +54,6 @@ export default function AddMailForm() {
   const [currentL, setCurrentL] = useState("");
   const [remarks, setRemarks] = useState("");
   const [description, setDescription] = useState("");
-
-
-
-
-
-
-
-
-
-
   const fileInputRef = useRef(null); // Ref to trigger file input
   const [file, setFile] = useState(null); // Store selected file
 
@@ -91,7 +68,7 @@ export default function AddMailForm() {
     if (selectedFile) {
       setFile(selectedFile); // Update state with the selected file
     }
-triggerFileInput()
+    triggerFileInput();
   };
 
   // Function to upload the file to Google Drive
@@ -101,18 +78,21 @@ triggerFileInput()
       reader.readAsDataURL(file); // Convert file to base64
 
       reader.onload = () => {
-        const rawLog = reader.result.split(',')[1]; // Extract the base64 part
+        const rawLog = reader.result.split(",")[1]; // Extract the base64 part
 
         const dataSend = {
           dataReq: { data: rawLog, name: file.name, type: file.type },
           fname: "uploadFilesToGoogleDrive",
         };
 
-        fetch('https://script.google.com/macros/s/AKfycbylrfp00ZXiaKoa-FEEnJpW644OxP7tki3GP32tDcvy-oe3vtHjJrMEYuu8vBADIHmhag/exec', {
-          method: "POST",
-          body: JSON.stringify(dataSend),
-        })
-          .then(res => res.json())
+        fetch(
+          "https://script.google.com/macros/s/AKfycbylrfp00ZXiaKoa-FEEnJpW644OxP7tki3GP32tDcvy-oe3vtHjJrMEYuu8vBADIHmhag/exec",
+          {
+            method: "POST",
+            body: JSON.stringify(dataSend),
+          }
+        )
+          .then((res) => res.json())
           .then((response) => {
             console.log("File uploaded:", response);
             resolve(response.url); // Resolve the promise with the file URL
@@ -125,15 +105,24 @@ triggerFileInput()
     });
   };
 
-function notifyAndReload() {
-  notify1(); // Call your notification function
-  window.location.reload(); // Reload the page
-}
+  function notifyAndReload() {
+    notify1(); // Call your notification function
+    window.location.reload(); // Reload the page
+  }
 
+  // CHECK AUTH
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "/"; // Redirect ONLY on the client
+        console.log("No user is signed in");
+      } else {
+        console.log("User is signed in:", user);
+      }
+    });
 
-
-
-
+    return () => unsubscribe(); // Important: Unsubscribe on unmount
+  }, []); // Empty dependency array ensures this runs only once on mount
 
   // Function to add a row to the database with the image URL
   const addRow = async (e) => {
@@ -168,16 +157,11 @@ function notifyAndReload() {
       }
 
       console.log("Row added successfully:", data);
-      notifyAndReload()
-
+      notifyAndReload();
     } catch (err) {
       console.error("Error:", err.message);
-
     }
-
   };
-
-  
 
   return (
     <section className="bg-white pt-20">
@@ -314,23 +298,21 @@ function notifyAndReload() {
                 Attachment
               </label>
               <input
-        type="file"
-        accept="image/*"
-        ref={fileInputRef}
-        onChange={handleFileSelection}
-      />
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={handleFileSelection}
+              />
 
-      {/* Submit button to upload file and add row */}
-      <button
-        onClick={addRow}
-        className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-sky-900 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800"
-      >
-        Submit
-      </button>
-              
+              {/* Submit button to upload file and add row */}
+              <button
+                onClick={addRow}
+                className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-sky-900 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800"
+              >
+                Submit
+              </button>
             </div>
           </div>
-         
 
           <button
             onClick={handleLogout}
@@ -338,13 +320,14 @@ function notifyAndReload() {
           >
             Logout
           </button>
-           <Link
-          href="/Mails"
+          <Link
+            href="/Mails"
             className=" absolute top-4 right-52 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
           >
-            Database</Link>
+            Database
+          </Link>
           <Link
-           href={"/"}
+            href={"/"}
             className=" absolute top-4 right-28 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
           >
             Images

@@ -3,13 +3,10 @@ import Form from "../Form"
 import 'animate.css';
 
 function Dashboard() {
-  return <section className="animate__animated animate__fadeIn">
-   
-    <Form/>
+  return <Form className="animate__animated animate__fadeIn"/>
 
 
-  </section>;
+
 }
 
 export default Dashboard;
-g
