@@ -1,7 +1,7 @@
 {
-  "/Update/page": "app/Update/page.js",
+  "/Dashboard/page": "app/Dashboard/page.js",
   "/page": "app/page.js",
-  "/Query/page": "app/Query/page.js",
   "/Mails/page": "app/Mails/page.js",
-  "/Dashboard/page": "app/Dashboard/page.js"
+  "/Update/page": "app/Update/page.js",
+  "/Query/page": "app/Query/page.js"
 }
