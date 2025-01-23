@@ -9,7 +9,7 @@ import { supabase } from "../app/lib/supabaseClient.js";
 import { useState, useRef, useEffect } from "react";
 
 const notify1 = () =>
-  toast.success("Success ✅ ", {
+  toast.success("Success  ", {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -72,38 +72,35 @@ export default function AddMailForm() {
   };
 
   // Function to upload the file to Google Drive
-  const guardarArchivo = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file); // Convert file to base64
-
-      reader.onload = () => {
-        const rawLog = reader.result.split(",")[1]; // Extract the base64 part
-
-        const dataSend = {
-          dataReq: { data: rawLog, name: file.name, type: file.type },
-          fname: "uploadFilesToGoogleDrive",
-        };
-
-        fetch(
-          "https://script.google.com/macros/s/AKfycbylrfp00ZXiaKoa-FEEnJpW644OxP7tki3GP32tDcvy-oe3vtHjJrMEYuu8vBADIHmhag/exec",
-          {
-            method: "POST",
-            body: JSON.stringify(dataSend),
-          }
-        )
-          .then((res) => res.json())
-          .then((response) => {
-            console.log("File uploaded:", response);
-            resolve(response.url); // Resolve the promise with the file URL
-          })
-          .catch((error) => {
-            console.error("Error uploading file:", error);
-            reject(error); // Reject the promise if an error occurs
-          });
+  const guardarArchivo = async (file) => {
+  try {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+      const rawLog = reader.result.split(",")[1];
+      const dataSend = {
+        dataReq: { data: rawLog, name: file.name, type: file.type },
+        fname: "uploadFilesToGoogleDrive",
       };
-    });
-  };
+
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbylrfp00ZXiaKoa-FEEnJpW644OxP7tki3GP32tDcvy-oe3vtHjJrMEYuu8vBADIHmhag/exec",
+        {
+          method: "POST",
+          body: JSON.stringify(dataSend),
+        }
+      );
+
+      const result = await response.json();
+      console.log("File uploaded:", result);
+      return result.url;
+    };
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    throw error; // Prevent infinite retries
+  }
+};
+
 
   function notifyAndReload() {
     notify1(); // Call your notification function
@@ -118,14 +115,18 @@ export default function AddMailForm() {
       setFile(null);  }
 
   // CHECK AUTH
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.href ="/";
-    console.log("No user is signed in");
-  } else {
-    console.log("User is signed in:", user);
-  }
-});
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "/"; // Redirect only if user is not signed in
+    } else {
+      console.log("User is signed in:", user);
+    }
+  });
+
+  return () => unsubscribe(); // Cleanup the listener
+}, []); // Add empty dependency array to avoid reinitialization
+
 
 
   // Function to add a row to the database with the image URL
