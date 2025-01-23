@@ -56,6 +56,7 @@ export default function AddMailForm() {
   const [description, setDescription] = useState("");
   const fileInputRef = useRef(null); // Ref to trigger file input
   const [file, setFile] = useState(null); // Store selected file
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Trigger file input when the submit button is clicked
   const triggerFileInput = () => {
@@ -107,8 +108,15 @@ export default function AddMailForm() {
 
   function notifyAndReload() {
     notify1(); // Call your notification function
-    window.location.reload(); // Reload the page
-  }
+    setMailID(generateUniqueID());
+      setSender("");
+      setTitle("");
+      setEndorse("");
+      setDispatch("");
+      setCurrentL("");
+      setRemarks("");
+      setDescription("");
+      setFile(null);  }
 
   // CHECK AUTH
   useEffect(() => {
@@ -307,9 +315,10 @@ export default function AddMailForm() {
               {/* Submit button to upload file and add row */}
               <button
                 onClick={addRow}
+                 disabled={isSubmitting} // Disable the button while submitting
                 className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-sky-900 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800"
               >
-                Submit
+              {isSubmitting ? "Submitting..." : "Submit"} 
               </button>
             </div>
           </div>
