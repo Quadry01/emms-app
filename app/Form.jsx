@@ -120,18 +120,14 @@ export default function AddMailForm() {
       setFile(null);  }
 
   // CHECK AUTH
-  useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                router.push('/'); // Use router.push for navigation
-                console.log("No user is signed in");
-            } else {
-                console.log("User is signed in:", user);
-            }
-        });
-
-        return () => unsubscribe();
-    }, [router]); // Add router to the dependency array
+const unsubscribe = onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "/";
+    console.log("No user is signed in");
+  } else {
+    console.log("User is signed in:", user);
+  }
+});
 
 
   // Function to add a row to the database with the image URL
