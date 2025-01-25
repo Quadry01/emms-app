@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import 'animate.css';
+import "animate.css";
 import { logout } from "../authCompilation.jsx";
 import { auth } from "../firebase.jsx";
 import { onAuthStateChanged } from "firebase/auth";
@@ -21,33 +21,21 @@ const notify1 = () =>
     theme: "light",
   });
 
-// MAIL ID GENERATOR
-function generateUniqueID() {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let uniqueID = "";
-  for (let i = 0; i < 8; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    uniqueID += characters[randomIndex];
-  }
-  return uniqueID;
-}
-
-// LOGOUT
-const handleLogout = async (e) => {
-  e.preventDefault();
-  try {
-    await logout();
-    notify1();
-  } catch (error) {
-    console.error("Error code:", error.code);
-    console.error("Error message:", error.message);
-  }
-};
+  const notify2 = () =>
+  toast.error("Form is Incomplete  ", {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: false,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
 
 // ADD MAIL
 export default function AddMailForm() {
-  const [mailID, setMailID] = useState(generateUniqueID());
+  // const [mailID, setMailID] = useState(generateUniqueID());
   const [sender, setSender] = useState("");
   const [title, setTitle] = useState("");
   const [endorse, setEndorse] = useState("");
@@ -58,10 +46,35 @@ export default function AddMailForm() {
   const fileInputRef = useRef(null); // Ref to trigger file input
   const [file, setFile] = useState(null); // Store selected file
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // LOGOUT
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      await logout();
+      notify1();
+    } catch (error) {
+      console.error("Error code:", error.code);
+      console.error("Error message:", error.message);
+    }
+  };
+
   // Trigger file input when the submit button is clicked
   const triggerFileInput = () => {
     fileInputRef.current.click();
   };
+
+  // MAIL ID GENERATOR
+  function generateUniqueID() {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let uniqueID = "";
+    for (let i = 0; i < 8; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      uniqueID += characters[randomIndex];
+    }
+    return uniqueID;
+  }
 
   // Handle file selection
   const handleFileSelection = (e) => {
@@ -73,101 +86,121 @@ export default function AddMailForm() {
   };
 
   // Function to upload the file to Google Drive
-  const guardarArchivo = async (file) => {
-  try {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = async () => {
-      const rawLog = reader.result.split(",")[1];
-      const dataSend = {
-        dataReq: { data: rawLog, name: file.name, type: file.type },
-        fname: "uploadFilesToGoogleDrive",
+  const guardarArchivo = (file) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = async () => {
+        const rawLog = reader.result.split(",")[1];
+        const dataSend = {
+          dataReq: { data: rawLog, name: file.name, type: file.type },
+          fname: "uploadFilesToGoogleDrive",
+        };
+
+        try {
+          const response = await fetch(
+            "https://script.google.com/macros/s/AKfycbylrfp00ZXiaKoa-FEEnJpW644OxP7tki3GP32tDcvy-oe3vtHjJrMEYuu8vBADIHmhag/exec",
+            {
+              method: "POST",
+              body: JSON.stringify(dataSend),
+            }
+          );
+
+          const result = await response.json();
+          console.log("File uploaded:", result);
+          resolve(result.url); // Resolve the promise with the file URL
+        } catch (error) {
+          console.error("Error uploading file:", error);
+          reject(error); // Reject the promise if fetch fails
+        }
       };
 
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbylrfp00ZXiaKoa-FEEnJpW644OxP7tki3GP32tDcvy-oe3vtHjJrMEYuu8vBADIHmhag/exec",
-        {
-          method: "POST",
-          body: JSON.stringify(dataSend),
-        }
-      );
-
-      const result = await response.json();
-      console.log("File uploaded:", result);
-      return result.url;
-    };
-  } catch (error) {
-    console.error("Error uploading file:", error);
-    throw error; // Prevent infinite retries
-  }
+      reader.onerror = () => {
+        reject(new Error("Error reading the file"));
+      };
+    } catch (error) {
+      console.error("Error in guardarArchivo:", error);
+      reject(error);
+    }
+  });
 };
 
 
-  function notifyAndReload() {
+  function notifyAndClearInput() {
     notify1(); // Call your notification function
-    setMailID(generateUniqueID());
-      setSender("");
-      setTitle("");
-      setEndorse("");
-      setDispatch("");
-      setCurrentL("");
-      setRemarks("");
-      setDescription("");
-      setFile(null);  }
+    setIsSubmitting(false);
+    // setMailID(generateUniqueID());
+    setSender("");
+    setTitle("");
+    setEndorse("");
+    setDispatch("");
+    setCurrentL("");
+    setRemarks("");
+    setDescription("");
+    setFile(null);
+  }
 
   // CHECK AUTH
-useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.href = "/"; // Redirect only if user is not signed in
-    } else {
-      console.log("User is signed in:", user);
-    }
-  });
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "/"; // Redirect only if user is not signed in
+      } else {
+        console.log("User is signed in:", user);
+      }
+    });
 
-  return () => unsubscribe(); // Cleanup the listener
-}, []); // Add empty dependency array to avoid reinitialization
-
-
+    return () => unsubscribe(); // Cleanup the listener
+  }, []); // Add empty dependency array to avoid reinitialization
 
   // Function to add a row to the database with the image URL
   const addRow = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  setIsSubmitting(true);
 
-    if (!file) {
-      console.error("No file selected");
-      return;
+  if (!file) {
+    notify2();
+    console.error("No file selected");
+    setIsSubmitting(false); // Reset submitting state
+    return;
+  }
+
+  try {
+    // Upload the file to Google Drive and get the file URL
+    const imageUrl = await guardarArchivo(file); // Get the file URL from guardarArchivo
+    console.log("Uploaded file URL:", imageUrl);
+
+    const mailID = generateUniqueID(); // Generate a unique mail ID
+
+    // Insert a row into the database with the uploaded file URL
+    const { data, error } = await supabase.from("mails").insert([
+      {
+        mail_id: mailID,
+        sender: sender,
+        title: title,
+        endorse_by: endorse,
+        dispatch_to: dispatch,
+        current_location: currentL,
+        remarks: remarks,
+        description: description,
+        image_url: imageUrl, // Use the uploaded file URL
+      },
+    ]);
+
+    if (error) {
+      throw error; // Handle Supabase errors
     }
 
-    try {
-      // First, upload the file to Google Drive and get the file URL
-      const imageUrl = await guardarArchivo(file);
+    console.log("Row added successfully:", data);
+    notifyAndClearInput(); // Clear input and notify the user
+  } catch (err) {
+    console.error("Error adding row:", err.message);
+  } finally {
+    setIsSubmitting(false); // Reset submitting state
+  }
+};
 
-      // Then, insert a row into the database with the image URL
-      const { data, error } = await supabase.from("mails").insert([
-        {
-          mail_id: mailID,
-          sender: sender,
-          title: title,
-          endorse_by: endorse,
-          dispatch_to: dispatch,
-          current_location: currentL,
-          remarks: remarks,
-          description: description,
-          image_url: imageUrl, // Use the URL of the uploaded file
-        },
-      ]);
-
-      if (error) {
-        throw error;
-      }
-
-      console.log("Row added successfully:", data);
-      notifyAndReload();
-    } catch (err) {
-      console.error("Error:", err.message);
-    }
-  };
 
   return (
     <section className="bg-white pt-20">
@@ -313,10 +346,10 @@ useEffect(() => {
               {/* Submit button to upload file and add row */}
               <button
                 onClick={addRow}
-                 disabled={isSubmitting} // Disable the button while submitting
+                disabled={isSubmitting} // Disable the button while submitting
                 className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-sky-900 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800"
               >
-              {isSubmitting ? "Submitting..." : "Submit"} 
+                {isSubmitting ? "Submitting..." : "Submit"}
               </button>
             </div>
           </div>

@@ -5,7 +5,6 @@ import SignUp from "./LoginPage"
 
 
 function Welcome() {
- const [user, setUser] = useState(null);
 
   return<SignUp/>
 }
