@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Link from "next/link";
 import { supabase } from "../lib/supabaseClient.js";
 import { useState, useRef, useEffect } from "react";
+import { FaSearch } from "react-icons/fa";
 
 const notify1 = () =>
   toast.success("Success  ", {
@@ -21,7 +22,7 @@ const notify1 = () =>
     theme: "light",
   });
 
-  const notify2 = () =>
+const notify2 = () =>
   toast.error("Form is Incomplete  ", {
     position: "top-right",
     autoClose: 5000,
@@ -87,45 +88,44 @@ export default function AddMailForm() {
 
   // Function to upload the file to Google Drive
   const guardarArchivo = (file) => {
-  return new Promise((resolve, reject) => {
-    try {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = async () => {
-        const rawLog = reader.result.split(",")[1];
-        const dataSend = {
-          dataReq: { data: rawLog, name: file.name, type: file.type },
-          fname: "uploadFilesToGoogleDrive",
+    return new Promise((resolve, reject) => {
+      try {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = async () => {
+          const rawLog = reader.result.split(",")[1];
+          const dataSend = {
+            dataReq: { data: rawLog, name: file.name, type: file.type },
+            fname: "uploadFilesToGoogleDrive",
+          };
+
+          try {
+            const response = await fetch(
+              "https://script.google.com/macros/s/AKfycbylrfp00ZXiaKoa-FEEnJpW644OxP7tki3GP32tDcvy-oe3vtHjJrMEYuu8vBADIHmhag/exec",
+              {
+                method: "POST",
+                body: JSON.stringify(dataSend),
+              }
+            );
+
+            const result = await response.json();
+            console.log("File uploaded:", result);
+            resolve(result.url); // Resolve the promise with the file URL
+          } catch (error) {
+            console.error("Error uploading file:", error);
+            reject(error); // Reject the promise if fetch fails
+          }
         };
 
-        try {
-          const response = await fetch(
-            "https://script.google.com/macros/s/AKfycbylrfp00ZXiaKoa-FEEnJpW644OxP7tki3GP32tDcvy-oe3vtHjJrMEYuu8vBADIHmhag/exec",
-            {
-              method: "POST",
-              body: JSON.stringify(dataSend),
-            }
-          );
-
-          const result = await response.json();
-          console.log("File uploaded:", result);
-          resolve(result.url); // Resolve the promise with the file URL
-        } catch (error) {
-          console.error("Error uploading file:", error);
-          reject(error); // Reject the promise if fetch fails
-        }
-      };
-
-      reader.onerror = () => {
-        reject(new Error("Error reading the file"));
-      };
-    } catch (error) {
-      console.error("Error in guardarArchivo:", error);
-      reject(error);
-    }
-  });
-};
-
+        reader.onerror = () => {
+          reject(new Error("Error reading the file"));
+        };
+      } catch (error) {
+        console.error("Error in guardarArchivo:", error);
+        reject(error);
+      }
+    });
+  };
 
   function notifyAndClearInput() {
     notify1(); // Call your notification function
@@ -156,51 +156,50 @@ export default function AddMailForm() {
 
   // Function to add a row to the database with the image URL
   const addRow = async (e) => {
-  e.preventDefault();
-  setIsSubmitting(true);
+    e.preventDefault();
+    setIsSubmitting(true);
 
-  if (!file) {
-    notify2();
-    console.error("No file selected");
-    setIsSubmitting(false); // Reset submitting state
-    return;
-  }
-
-  try {
-    // Upload the file to Google Drive and get the file URL
-    const imageUrl = await guardarArchivo(file); // Get the file URL from guardarArchivo
-    console.log("Uploaded file URL:", imageUrl);
-
-    const mailID = generateUniqueID(); // Generate a unique mail ID
-
-    // Insert a row into the database with the uploaded file URL
-    const { data, error } = await supabase.from("mails").insert([
-      {
-        mail_id: mailID,
-        sender: sender,
-        title: title,
-        endorse_by: endorse,
-        dispatch_to: dispatch,
-        current_location: currentL,
-        remarks: remarks,
-        description: description,
-        image_url: imageUrl, // Use the uploaded file URL
-      },
-    ]);
-
-    if (error) {
-      throw error; // Handle Supabase errors
+    if (!file) {
+      notify2();
+      console.error("No file selected");
+      setIsSubmitting(false); // Reset submitting state
+      return;
     }
 
-    console.log("Row added successfully:", data);
-    notifyAndClearInput(); // Clear input and notify the user
-  } catch (err) {
-    console.error("Error adding row:", err.message);
-  } finally {
-    setIsSubmitting(false); // Reset submitting state
-  }
-};
+    try {
+      // Upload the file to Google Drive and get the file URL
+      const imageUrl = await guardarArchivo(file); // Get the file URL from guardarArchivo
+      console.log("Uploaded file URL:", imageUrl);
 
+      const mailID = generateUniqueID(); // Generate a unique mail ID
+
+      // Insert a row into the database with the uploaded file URL
+      const { data, error } = await supabase.from("mails").insert([
+        {
+          mail_id: mailID,
+          sender: sender,
+          title: title,
+          endorse_by: endorse,
+          dispatch_to: dispatch,
+          current_location: currentL,
+          remarks: remarks,
+          description: description,
+          image_url: imageUrl, // Use the uploaded file URL
+        },
+      ]);
+
+      if (error) {
+        throw error; // Handle Supabase errors
+      }
+
+      console.log("Row added successfully:", data);
+      notifyAndClearInput(); // Clear input and notify the user
+    } catch (err) {
+      console.error("Error adding row:", err.message);
+    } finally {
+      setIsSubmitting(false); // Reset submitting state
+    }
+  };
 
   return (
     <section className="bg-white pt-20">
@@ -353,25 +352,40 @@ export default function AddMailForm() {
               </button>
             </div>
           </div>
-
+<div className=" absolute top-4 right-40 h-72">
           <button
             onClick={handleLogout}
-            className=" absolute top-4 right-4 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+            className=" relative mx-2 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
           >
             Logout
           </button>
           <Link
             href="/Mails"
-            className=" absolute top-4 right-52 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+            className=" relative mx-2 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
           >
             Database
           </Link>
           <Link
             href={"/"}
-            className=" absolute top-4 right-28 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+            className=" relative  mx-2 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
           >
             Images
           </Link>
+
+          <Link
+            href={"/Query"}
+            className=" relative mx-2 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+          >
+           Search
+          </Link>
+           <Link
+            href={"/Update"}
+            className=" relative mx-2 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+          >
+           Update
+          </Link>
+          
+          </div>
         </form>
       </div>
       <ToastContainer />

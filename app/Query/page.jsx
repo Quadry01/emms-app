@@ -14,7 +14,9 @@ const MailDetails = () => {
   // Check if mailData is not null and is an array
   if (!mailData || !Array.isArray(mailData)) {
     return (
-      <form className="max-w-lg mx-auto mt-20">
+      <form className="max-w-lg mx-auto mt-44">
+                <h2 className="mb-4 text-3xl text-center font-bold text-gray-900">Enter Mail ID</h2>
+
         <div className="relative w-full">
           <input
             type="search"
