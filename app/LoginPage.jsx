@@ -9,14 +9,17 @@ import { ToastContainer, toast } from 'react-toastify';
 
 
 
-const unsubscribe = onAuthStateChanged(auth, (user) => {
-  if (user) {
-    window.location.href = '/Dashboard'; // User is signed in
-    console.log("User is signed in:", user);
-  } else {
-    console.log("No user is signed in");
-  }
-});
+useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "/"; // Redirect only if user is not signed in
+      } else {
+        console.log("User is signed in:", user);
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup the listener
+  }, []); // Add empty dependency array to avoid reinitialization
 
 // Unsubscribe when no longer needed
 

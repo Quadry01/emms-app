@@ -142,17 +142,17 @@ export default function AddMailForm() {
   }
 
   // CHECK AUTH
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
-  //     if (!user) {
-  //       window.location.href = "/"; // Redirect only if user is not signed in
-  //     } else {
-  //       console.log("User is signed in:", user);
-  //     }
-  //   });
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "/"; // Redirect only if user is not signed in
+      } else {
+        console.log("User is signed in:", user);
+      }
+    });
 
-  //   return () => unsubscribe(); // Cleanup the listener
-  // }, []); // Add empty dependency array to avoid reinitialization
+    return () => unsubscribe(); // Cleanup the listener
+  }, []); // Add empty dependency array to avoid reinitialization
 
   // Function to add a row to the database with the image URL
   const addRow = async (e) => {
