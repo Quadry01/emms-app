@@ -37,3 +37,46 @@ export const useMailById = (mailId) => {
 
    return { mailData, loading };
 };
+
+
+// FOR BATCH QUERY
+
+
+// Fetch mails by sender
+const fetchMailsBySender = async (sender) => {
+   try {
+      const { data, error } = await supabase
+         .from('mails')
+         .select('*')
+         .ilike('sender', `%${sender}%`); // Use ilike for case-insensitive search
+
+      if (error) {
+         console.error('Error fetching mails by sender:', error);
+         return null;
+      }
+
+      return data;
+   } catch (err) {
+      console.error('Unexpected error:', err);
+      return null;
+   }
+};
+
+// Custom hook to fetch mails by sender
+export const useMailsBySender = (sender) => {
+   const [mailData, setMailData] = useState(null);
+   const [loading, setLoading] = useState(true);
+
+   useEffect(() => {
+      const fetchData = async () => {
+         setLoading(true);
+         const data = await fetchMailsBySender(sender);
+         setMailData(data);
+         setLoading(false);
+      };
+
+      if (sender) fetchData();
+   }, [sender]); // Only rerun if the sender changes
+
+   return { mailData, loading };
+};

@@ -1,97 +1,94 @@
+"use client";
+import React from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabaseClient.js";
+import Buttons from "../Butttons.jsx"
 
-  "use client"
+function Mails() {
+  const [data, setData] = useState([]);
 
-  import React from 'react'
-  
-import { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabaseClient.js';
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase.from("mails").select("*");
+      if (error) console.error("Error fetching data:", error);
+      else {
+        setData(data), console.log(data);
+      }
+    };
 
+    fetchData();
+  }, []);
 
-
-
-
-   
-   function Mails() {
-
-    const [data, setData] = useState([]);
-
-   useEffect(() => {
-      const fetchData = async () => {
-         const { data, error } = await supabase
-            .from('mails')
-            .select('*');
-         if (error) console.error('Error fetching data:', error);
-         else {setData(data), console.log(data)};
-      };
-
-      fetchData();
-   }, []);
-    
-     return (
-       <>
-        <div>
-      <h1 style={{ textAlign: "center", margin: "20px 0" }}>Mail Data</h1>
-      <table
-        style={{
-          borderCollapse: "collapse",
-          width: "100%",
-          fontFamily: "Arial, sans-serif",
-        }}
-        border="1"
-      >
-        <thead style={{ backgroundColor: "#f2f2f2" }}>
-          <tr>
-            <th style={{ padding: "10px", textAlign: "left" }}>S/N</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Date</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Mail ID</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Sender</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Title</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Endorse By</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Dispatch To</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>
-              Current Location
-            </th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Remarks</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Description</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Image URL</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr
-              key={item.id}
-              style={{
-                backgroundColor: index % 2 === 0 ? "#ffffff" : "#f9f9f9",
-              }}
-            >
-              <td style={{ padding: "10px" }}>{index + 1}</td>
-              <td style={{ padding: "10px" }}>{item.created_at.slice(0, 10)}</td>
-              <td style={{ padding: "10px" }}>{item.mail_id}</td>
-              <td style={{ padding: "10px" }}>{item.sender}</td>
-              <td style={{ padding: "10px" }}>{item.title}</td>
-              <td style={{ padding: "10px" }}>{item.endorse_by}</td>
-              <td style={{ padding: "10px" }}>{item.dispatch_to}</td>
-              <td style={{ padding: "10px" }}>{item.current_location}</td>
-              <td style={{ padding: "10px" }}>{item.remarks}</td>
-              <td style={{ padding: "10px" }}>{item.description}</td>
-              <td style={{ padding: "10px" }}>{item.image_url}</td>
+  return (
+    <>
+      <div>
+        <h1 style={{ textAlign: "center", margin: "20px 0", fontSize: "20px" }}>
+          Mail Data
+        </h1>
+        <table className="min-w-full bg-white border-collapse border border-gray-300 shadow-lg rounded-lg">
+          <thead className="bg-sky-900 text-white">
+            <tr>
+              {[
+                "S/N",
+                "Date",
+                "Mail ID",
+                "Sender",
+                "Title",
+                "Endorse By",
+                "Dispatch To",
+                "Current Location",
+                "Remarks",
+                "Description",
+                "Image URL",
+              ].map((header) => (
+                <th
+                  key={header}
+                  className="py-3 px-4 text-left text-sm font-semibold"
+                >
+                  {header}
+                </th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-     
-{/* <div>
-         <h1>Data from Supabase</h1>
-         <pre>{JSON.stringify(data, null, 2)}</pre>
-      </div> */}
+          </thead>
+          <tbody>
+            {data.map((item, index) => (
+              <tr
+                key={item.id}
+                className={`border-b ${
+                  index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                }`}
+              >
+                <td className="py-3 px-4 text-sm">{index + 1}</td>
+                <td className="py-3 px-4 text-sm">
+                  {item.created_at.slice(0, 10)}
+                </td>
+                <td className="py-3 px-4 text-sm">{item.mail_id}</td>
+                <td className="py-3 px-4 text-sm">{item.sender}</td>
+                <td className="py-3 px-4 text-sm">{item.title}</td>
+                <td className="py-3 px-4 text-sm">{item.endorse_by}</td>
+                <td className="py-3 px-4 text-sm">{item.dispatch_to}</td>
+                <td className="py-3 px-4 text-sm">{item.current_location}</td>
+                <td className="py-3 px-4 text-sm">{item.remarks}</td>
+                <td className="py-3 px-4 text-sm">{item.description}</td>
+                <td className="py-3 px-4 text-sm">
+                  <a
+                    href={item.image_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sky-900 hover:underline"
+                  >
+                    View Image
+                  </a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-       </>
-     )
-   }
-   
-   export default Mails
+     <Buttons/>
+    </>
+  );
+}
 
-
-
-
+export default Mails;

@@ -1,15 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMailById } from "../fetchMail";
+import Link from "next/link";
+import Buttons from "../Butttons"
+
 
 const MailDetails = () => {
   const [mailId, setMailId] = useState("");
   const { mailData, loading } = useMailById(mailId);
 
+ 
+ 
+
   const handleInputChange = (e) => {
+    
     setMailId(e.target.value);
+     
+
   };
+
+
 
   // Check if mailData is not null and is an array
   if (!mailData || !Array.isArray(mailData)) {
@@ -23,11 +34,11 @@ const MailDetails = () => {
             className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg  border-5 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Search mails..."
             value={mailId}
-            //   value={"SqNfXUX1"}
             onChange={handleInputChange}
             required
           />
         </div>
+        <Buttons/>
       </form>
     ); // Show a loading or fallback message
   }
@@ -35,6 +46,7 @@ const MailDetails = () => {
   return (
     <div>
       <form className="max-w-lg mx-auto mt-44">
+                <h2 className="mb-4 text-3xl text-center font-bold text-sky-900">Enter Mail ID</h2>
 
         <div className="relative w-full">
           <input
@@ -53,26 +65,25 @@ const MailDetails = () => {
 
       {loading && mailId && <p>Loading...</p>}
       
-
+      {mailData.length > 0 ? (
       <div className="w-full max-w-7xl px-4 md:px-5 lg:px-5 mx-auto">
         {mailData.map((item) => (
           <div
             key={item.id}
             className="w-full flex-col justify-start items-start lg:gap-10 gap-8 inline-flex"
           >
-            <h2 className="text-center text-black text-3xl font-bold font-manrope leading-normal">
-              Order Tracking
+            <h2 className="text-center text-sky-900 text-3xl font-bold font-manrope leading-normal">
+              Mail Tracking
             </h2>
-            {/* Order Details */}
+            {/* Mail Details */}
             <div className="w-full flex-col justify-start items-start gap-3 flex">
-              <h3 className="text-gray-900 text-2xl font-semibold font-manrope leading-9">
+              <h3 className="text-sky-900 text-2xl font-semibold font-manrope leading-9">
                 Mail ID: <span className="font-medium">{item.mail_id}</span>
               </h3>
-              <h4 className="text-gray-600 text-xl font-medium leading-loose">
+              <h4 className="text-sky-900 text-xl font-medium leading-loose">
                 Date created : {item.created_at.slice(0, 10)}
               </h4>
             </div>
-            {/* <div className="w-full flex-col justify-center sm:items-center items-start gap-8 flex"> */}
          <ol className="flex flex-row space-x-4 w-full">
   {item.current_location
     ? item.current_location.split(",").map((location, index) => (
@@ -141,8 +152,17 @@ const MailDetails = () => {
               </div>
             </div>
           </div>
-        ))}
+        )
+        
+        )}
       </div>
+
+
+) : ( 
+        <p >No mails found for the ID "{mailId}"</p>
+      )}
+
+      <Buttons/>
     </div>
   );
 };

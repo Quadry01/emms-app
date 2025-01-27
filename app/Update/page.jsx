@@ -1,11 +1,19 @@
 "use client";
 import React, { useState } from "react";
 import { useMailById } from "../updateMail";
+import Buttons from "../Butttons"
+
+
 
 const MailDetails = () => {
   const [mailId, setMailId] = useState("");
   const [updates, setUpdates] = useState({});
   const { mailData, loading, updateMailById } = useMailById(mailId);
+      const [isSubmitting, setIsSubmitting] = useState(false);
+
+
+
+
 
   const handleInputChange = (e) => {
     setMailId(e.target.value);
@@ -16,20 +24,27 @@ const MailDetails = () => {
   };
 
   const handleUpdate = async () => {
+
+    setIsSubmitting(true)
     if (mailId && Object.keys(updates).length > 0) {
       const updatedData = await updateMailById(mailId, updates);
       console.log("Updated data:", updatedData);
+      notify1()
+          setIsSubmitting(false)
+
     }
   };
 
   return (
     <div>
       <form className="max-w-lg mx-auto mt-80">
+                    <h2 className="mb-2 text-3xl text-center font-bold text-sky-900">Search by Mail ID to Update Mail</h2>
+
         <div className="relative w-full">
           <input
             type="search"
             className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg  border-5 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Search mails..."
+            placeholder="Enter Mail ID"
             value={mailId}
             onChange={handleInputChange}
             required
@@ -46,8 +61,8 @@ const MailDetails = () => {
           <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
           
 
-            <h2 className="mb-4 text-3xl font-bold text-gray-900">Update Mail</h2>
-
+            <h2 className="mb-2 text-3xl text-center font-bold text-sky-900"> Search by Mail ID to Update Mail</h2>
+<p className="mb-4 text-xl font-bold text-gray-900">Only Current Location can be edited</p>
             <form>
               <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
                 <div className="sm:col-span-2">
@@ -199,11 +214,16 @@ const MailDetails = () => {
               className=" inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-sky-900 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800"
               onClick={handleUpdate}
             >
-              Update Mail
+                          {isSubmitting ? "Updating..." : "Update Mail"}
+
+              
             </button>
           </div>
         </div>
       )}
+
+    <Buttons/>
+
     </div>
   );
 };

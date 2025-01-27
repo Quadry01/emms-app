@@ -1,6 +1,7 @@
 {
+  "/Query/page": "app/Query/page.js",
+  "/BQuery/page": "app/BQuery/page.js",
   "/page": "app/page.js",
-  "/Dashboard/page": "app/Dashboard/page.js",
   "/Mails/page": "app/Mails/page.js",
-  "/Query/page": "app/Query/page.js"
+  "/Dashboard/page": "app/Dashboard/page.js"
 }

@@ -1,14 +1,10 @@
 "use client";
 import React from "react";
 import "animate.css";
-import { logout } from "../authCompilation.jsx";
-import { auth } from "../firebase.jsx";
-import { onAuthStateChanged } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
-import Link from "next/link";
 import { supabase } from "../lib/supabaseClient.js";
-import { useState, useRef, useEffect } from "react";
-import { FaSearch } from "react-icons/fa";
+import { useState, useRef } from "react";
+import Buttons from "../Butttons.jsx"
 
 const notify1 = () =>
   toast.success("Success  ", {
@@ -48,17 +44,7 @@ export default function AddMailForm() {
   const [file, setFile] = useState(null); // Store selected file
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // LOGOUT
-  const handleLogout = async (e) => {
-    e.preventDefault();
-    try {
-      await logout();
-      notify1();
-    } catch (error) {
-      console.error("Error code:", error.code);
-      console.error("Error message:", error.message);
-    }
-  };
+  
 
   // Trigger file input when the submit button is clicked
   const triggerFileInput = () => {
@@ -141,19 +127,6 @@ export default function AddMailForm() {
     setFile(null);
   }
 
-  // CHECK AUTH
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        window.location.href = "/"; // Redirect only if user is not signed in
-      } else {
-        console.log("User is signed in:", user);
-      }
-    });
-
-    return () => unsubscribe(); // Cleanup the listener
-  }, []); // Add empty dependency array to avoid reinitialization
-
   // Function to add a row to the database with the image URL
   const addRow = async (e) => {
     e.preventDefault();
@@ -204,7 +177,7 @@ export default function AddMailForm() {
   return (
     <section className="bg-white pt-20">
       <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-        <h2 className="mb-4 text-xl font-bold text-gray-900">Add a new mail</h2>
+        <h2 className="mb-4 text-xl font-bold text-sky-900">Add a new mail</h2>
         <form action="#">
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
             <div className="sm:col-span-2">
@@ -316,7 +289,7 @@ export default function AddMailForm() {
                 htmlFor="description"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Description
+                Description*
               </label>
               <textarea
                 id="description"
@@ -324,7 +297,7 @@ export default function AddMailForm() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
-                placeholder="Your description here"
+                placeholder="Mail description here"
               ></textarea>
             </div>
 
@@ -333,7 +306,7 @@ export default function AddMailForm() {
                 className="block mb-2 text-sm font-medium text-gray-900 "
                 htmlFor="file_input"
               >
-                Attachment
+                Attachment*
               </label>
               <input
                 type="file"
@@ -352,40 +325,7 @@ export default function AddMailForm() {
               </button>
             </div>
           </div>
-<div className=" absolute top-4 right-40 h-72">
-          <button
-            onClick={handleLogout}
-            className=" relative mx-2 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-          >
-            Logout
-          </button>
-          <Link
-            href="/Mails"
-            className=" relative mx-2 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-          >
-            Database
-          </Link>
-          <Link
-            href={"/"}
-            className=" relative  mx-2 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-          >
-            Images
-          </Link>
-
-          <Link
-            href={"/Query"}
-            className=" relative mx-2 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-          >
-           Search
-          </Link>
-           <Link
-            href={"/Update"}
-            className=" relative mx-2 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-          >
-           Update
-          </Link>
-          
-          </div>
+<Buttons/>
         </form>
       </div>
       <ToastContainer />

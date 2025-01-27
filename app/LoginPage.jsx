@@ -1,10 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FcGoogle } from "react-icons/fc";
 import { signup } from "./authCompilation";
 import { login } from "./authCompilation";
 import { onAuthStateChanged } from "firebase/auth";
-import { useRouter } from "next/compat/router";
 import { auth } from "./firebase";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -12,19 +10,18 @@ const LoginPage = () => {
   const [showSigin, setShowSignin] = useState(false);
 
   const [isClient, setIsClient] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     // Ensure the code only runs on the client
     setIsClient(true);
-const unsubscribe = onAuthStateChanged(auth, (user) => {
-  if (user) {
-    window.location.href = '/Dashboard'; // User is signed in
-    console.log("User is signed in:", user);
-  } else {
-    console.log("No user is signed in");
-  }
-});
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.href = "/Dashboard"; // User is signed in
+        console.log("User is signed in:", user);
+      } else {
+        console.log("No user is signed in");
+      }
+    });
 
     return () => unsubscribe(); // Cleanup the listener
   }, []);
@@ -44,7 +41,11 @@ const unsubscribe = onAuthStateChanged(auth, (user) => {
     });
   // First Component
   const Signup = () => {
+        const [feedBack1, setFeedback1] = useState(false);
+
     const handleSubmit = async (e) => {
+              setFeedback1(true)
+
       e.preventDefault(); // Prevent default form submission
       console.log("Email:", email, "Password:", password);
 
@@ -57,6 +58,8 @@ const unsubscribe = onAuthStateChanged(auth, (user) => {
           theme: "light",
         });
       } catch (error) {
+                setFeedback1(false)
+
         // Handle Firebase errors and display user-friendly messages
         let customMessage;
 
@@ -166,17 +169,14 @@ const unsubscribe = onAuthStateChanged(auth, (user) => {
                     defaultChecked
                   />
                   <label className="inline-block" htmlFor="remember-me">
-                    I agree to the{" "}
-                    <a className="underline" href="#">
-                      Terms and Conditions
-                    </a>
+                    Remember me
                   </label>
                 </div>
                 <button
                   type="submit"
                   className="mt-6 rounded-lg bg-sky-900 px-4 py-2 text-center text-base font-semibold text-white shadow-md outline-none ring-blue-500 ring-offset-2 transition hover:bg-blue-700 focus:ring-2 md:w-32"
                 >
-                  Sign up
+                  {feedBack1? "Signing up..": "Sign up"}
                 </button>
               </div>
             </div>
@@ -191,16 +191,54 @@ const unsubscribe = onAuthStateChanged(auth, (user) => {
   const Signin = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [feedBack, setFeedback] = useState(false);
 
     const handleSubmit1 = async (e) => {
+      setFeedback(true);
       console.log("Second component");
       e.preventDefault();
 
       try {
         await login(email, password);
         notify1();
+
         // alert("Sign-up successful!");
       } catch (error) {
+        setFeedback(false);
+        // Handle Firebase errors and display user-friendly messages
+        let customMessage;
+
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            customMessage =
+              "This email is already in use. Please use a different one.";
+            break;
+          case "auth/weak-password":
+            customMessage = "Password is too weak. Please use a stronger one.";
+            break;
+          case "auth/invalid-email":
+            customMessage =
+              "Invalid email address. Please check and try again.";
+            break;
+          case "auth/operation-not-allowed":
+            customMessage = "Email/password accounts are not enabled.";
+            break;
+          default:
+            customMessage = `Unexpected error: ${error.message}`;
+            break;
+        }
+
+        // Display the custom message as a toast notification
+        toast.error(customMessage, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "colored",
+        });
+
         console.error("Error code:", error.code);
         console.error("Error message:", error.message);
       }
@@ -271,7 +309,7 @@ const unsubscribe = onAuthStateChanged(auth, (user) => {
                   type="submit"
                   className="mt-6 rounded-lg bg-sky-900 px-4 py-2 text-center text-base font-semibold text-white shadow-md outline-none ring-blue-500 ring-offset-2 transition hover:bg-blue-700 focus:ring-2 md:w-32"
                 >
-                  Sign in
+                  {feedBack? "Signing in..": "Sign in"}
                 </button>
               </div>
             </div>
