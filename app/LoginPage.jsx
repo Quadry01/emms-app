@@ -5,28 +5,37 @@ import { login } from "./authCompilation";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import { ToastContainer, toast } from "react-toastify";
+import Link from "next/link";
+
 
 const LoginPage = () => {
   const [showSigin, setShowSignin] = useState(false);
 
   const [isClient, setIsClient] = useState(false);
 
-  useEffect(() => {
-    // Ensure the code only runs on the client
+useEffect(() => {
     setIsClient(true);
+    
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        window.location.href = "/Dashboard"; // User is signed in
+        // Allow access to /Query, prevent unnecessary redirects
+        if (window.location.pathname !== "/Query" && window.location.pathname !== "/Dashboard") {
+          window.location.href = "/Dashboard"; // Redirect signed-in users to /Dashboard
+        }
         console.log("User is signed in:", user);
       } else {
+        // Allow unauthenticated users to stay on "/" and "/Query"
+        if (window.location.pathname !== "/" && window.location.pathname !== "/Query") {
+          window.location.href = "/"; // Redirect unauthenticated users to "/"
+        }
         console.log("No user is signed in");
       }
     });
 
-    return () => unsubscribe(); // Cleanup the listener
-  }, []);
+    return () => unsubscribe();
+}, []);
 
-  if (!isClient) return null; // Return nothing until it's mounted on the client
+if (!isClient) return null; // Prevent SSR issues
 
   const notify1 = () =>
     toast.success("Success  ", {
@@ -117,8 +126,8 @@ const LoginPage = () => {
             </div>
             {/* <img className="mx-auto w-11/12 max-w-lg rounded-lg object-cover" src="/images/SoOmmtD2P6rjV76JvJTc6.png" /> */}
           </div>
-          <div className="flex w-full flex-col md:w-1/2">
-            <div className="my-auto mx-auto flex flex-col justify-center px-6 pt-8 md:justify-start lg:w-[28rem]">
+          <div className=" relative flex w-full flex-col md:w-1/2">
+            <div className=" my-auto mx-auto flex flex-col justify-center px-6 pt-8 md:justify-start lg:w-[28rem]">
               <p className="text-center text-3xl font-bold md:text-left md:leading-tight">
                 Create an account
               </p>
@@ -179,7 +188,13 @@ const LoginPage = () => {
                   {feedBack1? "Signing up..": "Sign up"}
                 </button>
               </div>
+                                
             </div>
+            <Link 
+className="absolute top-0 left-0 mt-4 ml-4 rounded-lg bg-sky-900 px-4 py-2 text-center text-base font-semibold text-white shadow-md outline-none ring-blue-500 ring-offset-2 transition hover:bg-blue-700 focus:ring-2 md:w-32"
+
+                    href="/Query">Track Mail</Link>
+
           </div>
         </div>
         <ToastContainer />
@@ -260,7 +275,7 @@ const LoginPage = () => {
             </div>
             {/* <img className="mx-auto w-11/12 max-w-lg rounded-lg object-cover" src="/images/SoOmmtD2P6rjV76JvJTc6.png" /> */}
           </div>
-          <div className="flex w-full flex-col md:w-1/2">
+          <div className=" relative flex w-full flex-col md:w-1/2">
             <div className="my-auto mx-auto flex flex-col justify-center px-6 pt-8 md:justify-start lg:w-[28rem]">
               <p className="text-center text-3xl font-bold md:text-left md:leading-tight">
                 Login to your Account
@@ -311,8 +326,14 @@ const LoginPage = () => {
                 >
                   {feedBack? "Signing in..": "Sign in"}
                 </button>
+                
               </div>
             </div>
+
+            <Link 
+className="absolute top-0 left-0 mt-4 ml-4 rounded-lg bg-sky-900 px-4 py-2 text-center text-base font-semibold text-white shadow-md outline-none ring-blue-500 ring-offset-2 transition hover:bg-blue-700 focus:ring-2 md:w-32"
+
+                    href="/Query">Track Mail</Link>
           </div>
         </div>
         <ToastContainer />

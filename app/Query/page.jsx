@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useMailById } from "../fetchMail";
 import Link from "next/link";
-import Buttons from "../Butttons"
+// import Buttons from "../Butttons"
 
 
 const MailDetails = () => {
@@ -26,19 +26,19 @@ const MailDetails = () => {
   if (!mailData || !Array.isArray(mailData)) {
     return (
       <form className="max-w-lg mx-auto mt-44">
-                <h2 className="mb-4 text-3xl text-center font-bold text-gray-900">Enter Mail ID</h2>
+                <h2 className="mb-4 text-3xl text-center font-bold text-sky-900">Enter Mail ID</h2>
 
         <div className="relative w-full">
           <input
             type="search"
-            className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg  border-5 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            className="block p-2.5 w-full z-20 text-sm text-sky-900 bg-gray-50 rounded-lg  border-5 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Search mails..."
             value={mailId}
             onChange={handleInputChange}
             required
           />
         </div>
-        <Buttons/>
+        {/* <Buttons/> */}
       </form>
     ); // Show a loading or fallback message
   }
@@ -162,7 +162,7 @@ const MailDetails = () => {
         <p >No mails found for the ID "{mailId}"</p>
       )}
 
-      <Buttons/>
+      {/* <Buttons/> */}
     </div>
   );
 };

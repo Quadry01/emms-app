@@ -3,6 +3,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient.js";
 import Buttons from "../Butttons.jsx"
+import Link from "next/link";
 
 function Mails() {
   const [data, setData] = useState([]);
@@ -71,14 +72,14 @@ function Mails() {
                 <td className="py-3 px-4 text-sm">{item.remarks}</td>
                 <td className="py-3 px-4 text-sm">{item.description}</td>
                 <td className="py-3 px-4 text-sm">
-                  <a
+                  <Link
                     href={item.image_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sky-900 hover:underline"
                   >
                     View Image
-                  </a>
+                  </Link>
                 </td>
               </tr>
             ))}

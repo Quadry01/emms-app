@@ -1,8 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMailsBySender } from "../fetchMail";
 import { logout } from "../authCompilation";
 import Link from "next/link";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
 // Declare the notify1 function outside of the onClick handler
 const notify1 = (mailId) => {
@@ -56,6 +58,33 @@ const ButtonGroup = ({ handleLogout }) => (
 const MailDetails = () => {
   const [sender, setSender] = useState("");
   const { mailData, loading } = useMailsBySender(sender);
+      const [isClient, setIsClient] = useState(false);
+  
+
+
+useEffect(() => {
+    setIsClient(true);
+    
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "/";
+        // if (window.location.pathname !== "/Query" && window.location.pathname !== "/Dashboard") {
+        //   window.location.href = "/"; // Redirect only if not on "/Query" or "/Dashboard"
+        // }
+        console.log("User is signed in:", user);
+      } else {
+        // if (window.location.pathname !== "/") {
+        //   window.location.href = "/"; // Redirect unauthenticated users to "/"
+        // }
+        console.log("No user is signed in");
+      }
+    });
+
+    return () => unsubscribe();
+}, []);
+
+if (!isClient) return null; // Prevent SSR issues
+
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -71,6 +100,10 @@ const MailDetails = () => {
   const handleInputChange = (e) => setSender(e.target.value);
 
   const renderTable = () => (
+
+
+
+    
     <div className="w-full max-w-7xl px-4 md:px-5 lg:px-5 mx-auto mt-8">
       {mailData.length > 0 ? (
         <table className="min-w-full bg-white shadow-lg rounded-lg">

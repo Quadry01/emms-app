@@ -2,14 +2,27 @@
 import React, { useState } from "react";
 import { useMailById } from "../updateMail";
 import Buttons from "../Butttons"
+      import { ToastContainer, toast } from "react-toastify";
 
 
+const notify1 = () =>
+  toast.success("Updated Successfully  ", {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: false,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
 
 const MailDetails = () => {
   const [mailId, setMailId] = useState("");
   const [updates, setUpdates] = useState({});
   const { mailData, loading, updateMailById } = useMailById(mailId);
       const [isSubmitting, setIsSubmitting] = useState(false);
+
 
 
 
@@ -28,9 +41,11 @@ const MailDetails = () => {
     setIsSubmitting(true)
     if (mailId && Object.keys(updates).length > 0) {
       const updatedData = await updateMailById(mailId, updates);
+
       console.log("Updated data:", updatedData);
       notify1()
-          setIsSubmitting(false)
+                setIsSubmitting(false)
+
 
     }
   };
@@ -61,8 +76,8 @@ const MailDetails = () => {
           <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
           
 
-            <h2 className="mb-2 text-3xl text-center font-bold text-sky-900"> Search by Mail ID to Update Mail</h2>
-<p className="mb-4 text-xl font-bold text-gray-900">Only Current Location can be edited</p>
+            {/* <h2 className="mb-2 text-3xl text-center font-bold text-sky-900"> Search by Mail ID to Update Mail</h2> */}
+<p className="mb-4 text-xl font-bold text-sky-900">Only Current Location can be edited</p>
             <form>
               <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
                 <div className="sm:col-span-2">
@@ -223,7 +238,7 @@ const MailDetails = () => {
       )}
 
     <Buttons/>
-
+<ToastContainer />
     </div>
   );
 };

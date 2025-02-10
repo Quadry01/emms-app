@@ -521,6 +521,24 @@ video {
 .top-4 {
   top: 1rem;
 }
+.left-0 {
+  left: 0px;
+}
+.top-0 {
+  top: 0px;
+}
+.top-20 {
+  top: 5rem;
+}
+.top-1 {
+  top: 0.25rem;
+}
+.-top-1 {
+  top: -0.25rem;
+}
+.bottom-1 {
+  bottom: 0.25rem;
+}
 .z-10 {
   z-index: 10;
 }
@@ -581,6 +599,18 @@ video {
 }
 .mt-80 {
   margin-top: 20rem;
+}
+.ml-0 {
+  margin-left: 0px;
+}
+.mt-0 {
+  margin-top: 0px;
+}
+.ml-8 {
+  margin-left: 2rem;
+}
+.ml-4 {
+  margin-left: 1rem;
 }
 .block {
   display: block;
