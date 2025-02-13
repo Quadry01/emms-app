@@ -5,12 +5,19 @@ import { supabase } from "../lib/supabaseClient.js";
 import Buttons from "../Butttons.jsx"
 import Link from "next/link";
 
+function removeDoubleQuotesAndLeaveChars(str) {
+  return str.replace(/"/g, '');
+}
+ const officeID = sessionStorage.getItem('officeID');
+
+  const filteredOfficeID = removeDoubleQuotesAndLeaveChars(officeID)
+
 function Mails() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data, error } = await supabase.from("mails").select("*");
+      const { data, error } = await supabase.from(filteredOfficeID).select("*");
       if (error) console.error("Error fetching data:", error);
       else {
         setData(data), console.log(data);

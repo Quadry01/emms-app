@@ -20,6 +20,7 @@ const notify1 = () =>
   });
 // LOGOUT
 const handleLogout = async (e) => {
+  sessionStorage.clear();
   e.preventDefault();
   try {
     await logout();
@@ -64,6 +65,8 @@ function Butttons() {
           Logout
         </button>
         <Link
+                  target="#"
+
           href="/Mails"
           className=" relative mx-2 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
         >

@@ -29,24 +29,28 @@ const ButtonGroup = ({ handleLogout }) => (
       Logout
     </button>
     <Link
+      target="#"
       href="/Mails"
       className="relative mx-2 text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
     >
       Database
     </Link>
     <Link
-      href={"/"}
+      target="#"
+      href={"/Query"}
       className="relative mx-2 text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
     >
-      Images
+      Track Mail
     </Link>
     <Link
-      href={"/Query"}
+      target="#"
+      href={"/BQuery"}
       className="relative mx-2 text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
     >
       Search
     </Link>
     <Link
+      target="#"
       href={"/Update"}
       className="relative mx-2 text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
     >
@@ -58,13 +62,11 @@ const ButtonGroup = ({ handleLogout }) => (
 const MailDetails = () => {
   const [sender, setSender] = useState("");
   const { mailData, loading } = useMailsBySender(sender);
-      const [isClient, setIsClient] = useState(false);
-  
+  const [isClient, setIsClient] = useState(false);
 
-
-useEffect(() => {
+  useEffect(() => {
     setIsClient(true);
-    
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
         window.location.href = "/";
@@ -81,10 +83,9 @@ useEffect(() => {
     });
 
     return () => unsubscribe();
-}, []);
+  }, []);
 
-if (!isClient) return null; // Prevent SSR issues
-
+  if (!isClient) return null; // Prevent SSR issues
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -100,10 +101,6 @@ if (!isClient) return null; // Prevent SSR issues
   const handleInputChange = (e) => setSender(e.target.value);
 
   const renderTable = () => (
-
-
-
-    
     <div className="w-full max-w-7xl px-4 md:px-5 lg:px-5 mx-auto mt-8">
       {mailData.length > 0 ? (
         <table className="min-w-full bg-white shadow-lg rounded-lg">
@@ -191,7 +188,7 @@ if (!isClient) return null; // Prevent SSR issues
   return (
     <div>
       <form className="max-w-lg mx-auto mt-44">
-          <h2 className="mb-4 text-3xl text-center font-bold text-sky-900">
+        <h2 className="mb-4 text-3xl text-center font-bold text-sky-900">
           Enter Sender Name
         </h2>
         <div className="relative w-full">

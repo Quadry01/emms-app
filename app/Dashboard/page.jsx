@@ -51,6 +51,10 @@ export default function AddMailForm() {
     fileInputRef.current.click();
   };
 
+const officeID = sessionStorage.getItem('officeID');
+
+console.log(officeID)
+
   // MAIL ID GENERATOR
   function generateUniqueID() {
     const characters =
@@ -87,7 +91,7 @@ export default function AddMailForm() {
 
           try {
             const response = await fetch(
-              "https://script.google.com/macros/s/AKfycbylrfp00ZXiaKoa-FEEnJpW644OxP7tki3GP32tDcvy-oe3vtHjJrMEYuu8vBADIHmhag/exec",
+              "https://script.google.com/macros/s/AKfycby2l6Lw-c4pr3hUh8AZdA3sHjREfKFIZ4xm__8fU9h1ju6ZDecLevIJDDO4wQSROVV4Zg/exec",
               {
                 method: "POST",
                 body: JSON.stringify(dataSend),
