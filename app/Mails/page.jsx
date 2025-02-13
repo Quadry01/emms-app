@@ -1,32 +1,62 @@
 "use client";
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient.js";
-import Buttons from "../Butttons.jsx"
+import Buttons from "../Butttons.jsx";
 import Link from "next/link";
 
-function removeDoubleQuotesAndLeaveChars(str) {
-  return str.replace(/"/g, '');
-}
- const officeID = sessionStorage.getItem('officeID');
-
-  const filteredOfficeID = removeDoubleQuotesAndLeaveChars(officeID)
+// Utility function to remove double quotes
+const removeDoubleQuotesAndLeaveChars = (str) =>
+  str ? str.replace(/"/g, "") : "";
 
 function Mails() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data, error } = await supabase.from(filteredOfficeID).select("*");
-      if (error) console.error("Error fetching data:", error);
-      else {
-        setData(data), console.log(data);
+      const officeID = sessionStorage.getItem("officeID");
+      const filteredOfficeID = removeDoubleQuotesAndLeaveChars(officeID);
+
+      if (!filteredOfficeID) {
+        setError("Office ID is missing.");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from(filteredOfficeID)
+          .select("*");
+
+        if (error) {
+          setError("Error fetching data.");
+          console.error("Error fetching data:", error);
+        } else {
+          setData(data);
+        }
+      } catch (err) {
+        setError("Unexpected error occurred.");
+        console.error("Unexpected error:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
+  // Show loading spinner
+  if (loading) {
+    return <p style={{ textAlign: "center" }}>Loading...</p>;
+  }
+
+  // Show error message
+  if (error) {
+    return <p style={{ color: "red", textAlign: "center" }}>{error}</p>;
+  }
+
+  // Render the table
   return (
     <>
       <div>
@@ -68,7 +98,7 @@ function Mails() {
               >
                 <td className="py-3 px-4 text-sm">{index + 1}</td>
                 <td className="py-3 px-4 text-sm">
-                  {item.created_at.slice(0, 10)}
+                  {item.created_at?.slice(0, 10)}
                 </td>
                 <td className="py-3 px-4 text-sm">{item.mail_id}</td>
                 <td className="py-3 px-4 text-sm">{item.sender}</td>
@@ -94,7 +124,7 @@ function Mails() {
         </table>
       </div>
 
-     <Buttons/>
+      <Buttons />
     </>
   );
 }
