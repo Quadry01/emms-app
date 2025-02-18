@@ -11,6 +11,11 @@
       "static/chunks/main-app.js",
       "static/chunks/app/page.js"
     ],
+    "/Query/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/Query/page.js"
+    ],
     "/Dashboard/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -22,25 +27,16 @@
       "static/chunks/main-app.js",
       "static/chunks/app/Mails/page.js"
     ],
-    "/Query/page": [
+    "/Update/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/Query/page.js"
+      "static/css/app/Update/page.css",
+      "static/chunks/app/Update/page.js"
     ],
     "/BQuery/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/BQuery/page.js"
-    ],
-    "/Update/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/Update/page.js"
-    ],
-    "/_not-found/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
     ]
   }
 }

@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient.js";
 import Buttons from "../Butttons.jsx";
-import Link from "next/link";
 
 // Utility function to remove double quotes
 const removeDoubleQuotesAndLeaveChars = (str) =>
@@ -109,14 +108,14 @@ function Mails() {
                 <td className="py-3 px-4 text-sm">{item.remarks}</td>
                 <td className="py-3 px-4 text-sm">{item.description}</td>
                 <td className="py-3 px-4 text-sm">
-                  <Link
+                  <a
                     href={item.image_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sky-900 hover:underline"
                   >
                     View Image
-                  </Link>
+                  </a>
                 </td>
               </tr>
             ))}

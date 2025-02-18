@@ -8,7 +8,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 // Notification functions
 const notifySuccess = () => toast.success("Mail added successfully!");
-const notifyError = (message) => toast.error(`Error: ${message}`);
+
+  const notifyError = (message) => toast.error(`Error: ${message}`);
+ 
 
 // Hook to fetch and sanitize officeID
 const useOfficeID = () => {
@@ -92,7 +94,7 @@ export default function AddMailForm() {
   const addRow = async (e) => {
     e.preventDefault();
     if (!officeID) {
-      notifyError("Office ID is missing. Please log in or set it correctly.");
+      notifyError("Office ID is missing. Please log out and set it correctly.");
       return;
     }
 
@@ -121,8 +123,23 @@ export default function AddMailForm() {
       ]);
       if (error) throw error;
 
-      notifySuccess();
+ toast.success("Mail added successfully", {
+          position: "top-left",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "colored",
+        });
       clearForm();
+
+
+ setTimeout(() => {
+      toast.dismiss(); // Dismiss the specific toast after 5 seconds
+    }, 5000); // 5000 ms = 5 seconds
+
+
     } catch (err) {
       notifyError(err.message);
     } finally {
@@ -142,45 +159,48 @@ export default function AddMailForm() {
   };
 
   return (
-    <section className="bg-white pt-20">
+    <section className="bg-white pt-16">
       <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
         <h2 className="mb-4 text-xl font-bold text-sky-900">Add a new mail</h2>
-        <form onSubmit={addRow}>
-          <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-            <TextInput label="Sender*" value={sender} onChange={(e) => setSender(e.target.value)} placeholder="Sender" required />
-            <TextInput label="Title*" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" required />
-            <TextInput label="Endorsed by*" value={endorse} onChange={(e) => setEndorse(e.target.value)} placeholder="Endorsed by" required />
-            <TextInput label="Dispatch to*" value={dispatch} onChange={(e) => setDispatch(e.target.value)} placeholder="Dispatch to" required />
-            <TextInput label="Current Location*" value={currentL} onChange={(e) => setCurrentL(e.target.value)} placeholder="Current location" required />
-            <TextInput label="Remarks*" value={remarks} onChange={(e) => setRemarks(e.target.value)} placeholder="Remarks" required />
-            <div className="sm:col-span-2">
-              <label className="block mb-2 text-sm font-medium text-gray-900">Description*</label>
-              <textarea
-                rows="6"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
-                placeholder="Mail description"
-                required
-              ></textarea>
-            </div>
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-900">Attachment*</label>
-              <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileSelection} required />
-              {file && <p className="mt-2 text-sm text-gray-600">Selected file: {file.name}</p>}
-            </div>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="inline-flex items-center px-5 py-2.5 mt-4 text-sm font-medium text-white bg-sky-900 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800"
-            >
-              {isSubmitting ? "Submitting..." : "Submit"}
-            </button>
-          </div>
+        <form ><div className=" flex-col gap-6">
+  <TextInput label="Sender*" value={sender} onChange={(e) => setSender(e.target.value)} placeholder="Sender" required />
+  <TextInput className="block w-full" label="Title*" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" required />
+  <TextInput label="Endorsed by*" value={endorse} onChange={(e) => setEndorse(e.target.value)} placeholder="Endorsed by" required />
+  <TextInput label="Dispatch to*" value={dispatch} onChange={(e) => setDispatch(e.target.value)} placeholder="Dispatch to" required />
+  <TextInput label="Current Location*" value={currentL} onChange={(e) => setCurrentL(e.target.value)} placeholder="Current location" required />
+  <TextInput label="Remarks*" value={remarks} onChange={(e) => setRemarks(e.target.value)} placeholder="Remarks" required />
+  <div>
+    <label className="block mb-2 text-sm font-medium text-gray-900">Description*</label>
+    <textarea
+      rows="6"
+      value={description}
+      onChange={(e) => setDescription(e.target.value)}
+      className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
+      placeholder="Mail description"
+      required
+    ></textarea>
+  </div>
+  <div>
+    <label className="block mb-2 text-sm font-medium text-gray-900">Attachment*</label>
+    <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileSelection} required />
+    {file && <p className="mt-2 text-sm text-gray-600">Selected file: {file.name}</p>}
+  </div>
+  <button
+  type="button"
+  disabled={isSubmitting}
+  onClick={addRow}
+  className="inline-flex items-center px-8 py-2.5 mt-4 text-sm font-medium text-white bg-sky-900 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800"
+>
+  {isSubmitting ? "Submitting..." : "Submit"}
+</button>
+
+
+</div>
+
           <Buttons />
         </form>
       </div>
-      <ToastContainer />
+      <ToastContainer limit={1}/>
     </section>
   );
 }

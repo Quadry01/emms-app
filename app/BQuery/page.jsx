@@ -7,21 +7,19 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import { ToastContainer, toast } from "react-toastify";
 // Declare the notify1 function outside of the onClick handler
-const notify1 = (mailId) => {
-  toast.success(`Viewing mail with ID: ${mailId}`, {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: false,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-  });
-};
+
 
 const ButtonGroup = ({ handleLogout }) => (
   <div className="absolute top-4 right-4 h-72">
+ <Link
+                  target="#"
+
+          href="/Dashboard"
+          className=" relative mx-2 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+        >
+          Home
+        </Link>
+
     <button
       onClick={handleLogout}
       className="relative mx-2 text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
@@ -116,7 +114,7 @@ const MailDetails = () => {
                 "Created At",
                 "Remarks",
                 "Image",
-                "Action",
+                "Maail ID",
               ].map((header) => (
                 <th
                   key={header}
@@ -147,12 +145,7 @@ const MailDetails = () => {
                   </a>
                 </td>
                 <td className="py-3 px-4 text-sm">
-                  <button
-                    onClick={() => notify1(item.mail_id)}
-                    className="bg-sky-900 text-white py-2 px-4 rounded hover:bg-sky-600"
-                  >
-                    View Details
-                  </button>
+                  {item.mail_id}
                 </td>
               </tr>
             ))}

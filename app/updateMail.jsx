@@ -44,30 +44,7 @@ const fetchMailById = async (officeID, mailId) => {
   }
 };
 
-// Update mail by mail ID
-const updateMailById = async (officeID, mailId, updates) => {
-  if (!officeID) {
-    console.error("Office ID is missing");
-    return null;
-  }
 
-  try {
-    const { data, error } = await supabase
-      .from(officeID)
-      .update(updates)
-      .eq("mail_id", mailId);
-
-    if (error) {
-      console.error("Error updating mail by ID:", error);
-      return null;
-    }
-
-    return data;
-  } catch (err) {
-    console.error("Unexpected error:", err);
-    return null;
-  }
-};
 
 // Custom hook to fetch mail data by ID
 export const useMailById = (mailId) => {
@@ -90,3 +67,57 @@ export const useMailById = (mailId) => {
 
   return { mailData, loading, updateMailById: (updates) => updateMailById(officeID, mailId, updates) };
 };
+
+// Component that calls the update function
+const YourComponent = () => {
+  const [updates, setUpdates] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [mailId, setMailId] = useState("06Ny5mj9"); // Example mail ID for testing
+  const officeID = useOfficeID();
+
+  const handleUpdateChange = (e) => {
+    setUpdates({ ...updates, [e.target.name]: e.target.value });
+  };
+
+  const handleUpdate = async () => {
+    setIsSubmitting(true);
+
+    if (mailId && Object.keys(updates).length > 0) {
+      console.log("Office ID:", officeID);
+      console.log("Mail ID:", mailId);
+      console.log("Updates:", updates);
+
+      // Check if the mail record exists
+      const existingRecord = await supabase
+        .from(officeID)
+        .select("*")
+        .eq("mail_id", mailId);
+      
+      console.log("Existing Record:", existingRecord);
+
+      // Call the update function
+      const updatedData = await updateMailById(officeID, mailId, updates);
+
+      if (updatedData && updatedData.length > 0) {
+        console.log("Updated data:", updatedData); // Ensure this logs correctly
+        notify1(); // Assuming this is a function to notify the user
+      } else {
+        console.error("No records were updated.");
+      }
+
+      setIsSubmitting(false);
+    } else {
+      console.error("Invalid parameters: mailId or updates are missing.");
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div>
+      {/* Render your UI here */}
+      <button onClick={handleUpdate}>Update Mail</button>
+    </div>
+  );
+};
+
+export default YourComponent;

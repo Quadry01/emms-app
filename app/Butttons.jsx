@@ -58,6 +58,15 @@ function Butttons() {
   return (
     <div>
       <div className=" absolute top-4 right-5 h-72">
+ <Link
+                  target="#"
+
+          href="/Dashboard"
+          className=" relative mx-2 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+        >
+          Home
+        </Link>
+
         <button
           onClick={handleLogout}
           className=" relative mx-2 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
