@@ -160,6 +160,8 @@ export default function AddMailForm() {
 
   return (
     <section className="bg-white pt-16">
+            <ToastContainer/>
+
       <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
         <h2 className="mb-4 text-xl font-bold text-sky-900">Add a new mail</h2>
         <form ><div className=" flex-col gap-6">
@@ -200,7 +202,6 @@ export default function AddMailForm() {
           <Buttons />
         </form>
       </div>
-      <ToastContainer limit={1}/>
     </section>
   );
 }

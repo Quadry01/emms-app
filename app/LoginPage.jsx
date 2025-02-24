@@ -6,6 +6,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import { ToastContainer, toast } from "react-toastify";
 import Link from "next/link";
+import { Eye, EyeOff } from "lucide-react";
+
 
 const LoginPage = () => {
 
@@ -211,6 +213,8 @@ const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [officeID, setOfficeID] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    
 
     const [feedBack, setFeedback] = useState(false);
 
@@ -331,23 +335,30 @@ const LoginPage = () => {
                   </div>
                 </div>
                 <div className="mb-1 flex flex-col pt-4">
-                  <label
-                    htmlFor="password"
-                    className="block mb-2 text-sm font-medium text-gray-900 "
-                  >
-                    Password*
-                  </label>
-                  <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
-                    <input
-                      type="password"
-                      id="login-password"
-                      className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
-                      placeholder="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-                </div>
+      <label
+        htmlFor="password"
+        className="block mb-2 text-sm font-medium text-gray-900"
+      >
+        Password*
+      </label>
+      <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
+        <input
+          type={showPassword ? "text" : "password"}
+          id="login-password"
+          className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button
+          type="button"
+          className="absolute right-3 top-2.5 text-gray-600"
+          onClick={() => setShowPassword(!showPassword)}
+        >
+          {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+        </button>
+      </div>
+    </div>
 
                  <div className="mb-4 flex flex-col pt-4">
                   <label

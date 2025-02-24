@@ -15,45 +15,53 @@ const ButtonGroup = ({ handleLogout }) => (
                   target="#"
 
           href="/Dashboard"
-          className=" relative mx-2 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+          className=" relative mx-1 text-white py-2 text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
         >
           Home
         </Link>
 
     <button
       onClick={handleLogout}
-      className="relative mx-2 text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+      className="relative mx-1 text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
     >
       Logout
     </button>
     <Link
       target="#"
       href="/Mails"
-      className="relative mx-2 text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+      className="relative mx-1 text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
     >
       Database
     </Link>
     <Link
       target="#"
       href={"/Query"}
-      className="relative mx-2 text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+      className="relative mx-1 text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
     >
       Track Mail
     </Link>
     <Link
       target="#"
       href={"/BQuery"}
-      className="relative mx-2 text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+      className="relative mx-1 text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
     >
       Search
     </Link>
     <Link
       target="#"
       href={"/Update"}
-      className="relative mx-2 text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+      className="relative mx-1 text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
     >
       Update
     </Link>
+
+    <Link
+          target="#"
+          href={"/Delete"}
+          className=" relative mx-1 text-white py-2text-white bg-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+        >
+          Delete
+        </Link>
   </div>
 );
 

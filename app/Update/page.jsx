@@ -95,6 +95,8 @@ const MailDetails = () => {
 
   return (
     <div>
+            <ToastContainer />
+
       <form className="max-w-lg mx-auto mt-80">
         <h2 className="mb-2 text-3xl text-center font-bold text-sky-900">
           Search by Mail ID to Update Mail
@@ -157,7 +159,6 @@ const MailDetails = () => {
       )}
 
       <Buttons />
-      <ToastContainer />
     </div>
   );
 };
