@@ -5,8 +5,6 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../app/firebase.jsx";
 
 
-
-
 function Welcome() {
 
 

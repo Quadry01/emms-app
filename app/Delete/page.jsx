@@ -76,6 +76,7 @@ const MailDeletion = () => {
   const handleDelete = async () => {
     setIsSubmitting(true);
     await deleteMailById(officeID, mailId);
+    setMailId("");
     setIsSubmitting(false);
   };
 

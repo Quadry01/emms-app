@@ -78,7 +78,7 @@ export default function AddMailForm() {
         };
         try {
           const response = await fetch(
-            "https://script.google.com/macros/s/AKfycby2l6Lw-c4pr3hUh8AZdA3sHjREfKFIZ4xm__8fU9h1ju6ZDecLevIJDDO4wQSROVV4Zg/exec",
+            "https://script.google.com/macros/s/AKfycbwG3lRqQvVGz2W0iR6yO-FNEIjTkOH3ZZYP-baDyhPXeYMX9iHzrIJWDfOuPcs-0h_jig/exec",
             { method: "POST", body: JSON.stringify(dataSend) }
           );
           const result = await response.json();
