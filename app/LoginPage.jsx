@@ -45,7 +45,7 @@ const LoginPage = () => {
 
   const notify1 = () =>
     toast.success("Success  ", {
-      position: "top-right",
+      position: "top-left",
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: false,
@@ -262,7 +262,7 @@ const LoginPage = () => {
 
         // Display the custom message as a toast notification
         toast.error(customMessage, {
-          position: "top-right",
+          position: "top-left",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -277,7 +277,7 @@ const LoginPage = () => {
     } else {
       // At least one field is missing
       toast.error("Please fill in all required fields (Email, Password and Office ID).", {
-          position: "top-right",
+          position: "top-left",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,

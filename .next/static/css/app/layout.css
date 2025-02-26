@@ -988,6 +988,9 @@ video {
 .font-semibold {
   font-weight: 600;
 }
+.lowercase {
+  text-transform: lowercase;
+}
 .leading-10 {
   line-height: 2.5rem;
 }

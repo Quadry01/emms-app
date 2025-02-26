@@ -56,10 +56,27 @@ export default function AddMailForm() {
   const fileInputRef = useRef(null);
 
   const generateUniqueID = () => {
-    return [...Array(8)]
-      .map(() => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".charAt(Math.floor(Math.random() * 62)))
-      .join("");
-  };
+  let chars = "abcdefghijklmnopqrstuvwxyz";
+  let numbers = "0123456789";
+  
+  // Generate 6 random digits
+  let id = [...Array(6)]
+    .map(() => numbers.charAt(Math.floor(Math.random() * numbers.length)))
+    .join("");
+
+  // Generate 2 random lowercase letters
+  let letters = [...Array(2)]
+    .map(() => chars.charAt(Math.floor(Math.random() * chars.length)))
+    .join("");
+
+  // Shuffle the ID to mix letters and numbers
+  let finalID = (id + letters).split("").sort(() => 0.5 - Math.random()).join("");
+
+  return finalID;
+};
+
+
+
 
   const handleFileSelection = (e) => {
     const selectedFile = e.target.files[0];

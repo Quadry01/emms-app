@@ -9,7 +9,7 @@ import { auth } from "./firebase";
 
 const notify1 = () =>
   toast.success("Logout Successfully  ", {
-    position: "top-right",
+    position: "top-left",
     autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: false,
