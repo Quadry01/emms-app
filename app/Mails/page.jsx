@@ -59,7 +59,7 @@ function Mails() {
   return (
     <>
       <div>
-        <h1 style={{ textAlign: "center", margin: "20px 0", fontSize: "20px" }}>
+        <h1 className="text-center my-5 text-lg">
           Mail Data
         </h1>
         <table className="min-w-full bg-white border-collapse border border-gray-300 shadow-lg rounded-lg">

@@ -21,17 +21,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/Mails/page.js"
-    ],
-    "/Delete/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/Delete/page.css",
-      "static/chunks/app/Delete/page.js"
-    ],
-    "/Query/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/Query/page.js"
     ]
   }
 }
