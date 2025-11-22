@@ -1,4 +1,4 @@
-// File: /Users/apple_1/Desktop/emms-app/app/page.jsx
+// File: /Users/apple2/Desktop/    /app/page.jsx
 import * as entry from '../../../app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

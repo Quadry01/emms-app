@@ -1,4 +1,4 @@
-// File: /Users/apple_1/Desktop/emms-app/app/Mails/page.jsx
+// File: /Users/apple2/Desktop/    /app/Mails/page.jsx
 import * as entry from '../../../../app/Mails/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

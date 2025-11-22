@@ -12,7 +12,7 @@ function Mails() {
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
 
-  useEffect(() => {
+useEffect(() => {
     const fetchData = async () => {
       const officeID = sessionStorage.getItem("officeID");
       const filteredOfficeID = removeDoubleQuotesAndLeaveChars(officeID);
@@ -26,7 +26,11 @@ function Mails() {
       try {
         const { data, error } = await supabase
           .from(filteredOfficeID)
-          .select("*");
+          .select("*")
+          // 💡 Modification: Use .limit() with a large number 
+          // to retrieve all rows (e.g., up to 100,000).
+          // .limit(2000); 
+          .range(999, 1999); // Fetch rows from 1000 to 1999
 
         if (error) {
           setError("Error fetching data.");
@@ -45,6 +49,7 @@ function Mails() {
     fetchData();
   }, []);
 
+
   // Show loading spinner
   if (loading) {
     return <p style={{ textAlign: "center" }}>Loading...</p>;
@@ -60,7 +65,7 @@ function Mails() {
     <>
       <div>
         <h1 className="text-center my-5 text-lg">
-          Mail Data
+          Mail Dataa
         </h1>
         <table className="min-w-full bg-white border-collapse border border-gray-300 shadow-lg rounded-lg">
           <thead className="bg-sky-900 text-white">
